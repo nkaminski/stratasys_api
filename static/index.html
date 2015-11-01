@@ -187,11 +187,11 @@ function getData(){
             });
    $.getJSON("/v1/uprint/queue", function(result){
         $("#queuels").empty();
-      $.each(result, function(i, val){
-        $("#queuels").append(sprintf("<dt>Job %d</dt><dd><strong>%s</strong> build time %s</dd>",i+1,val.jobName,sec2hms(parseFloat(val.estimatedBuildTime))));
-      }).fail( function(x) {
+        $.each(result, function(i, val){
+                $("#queuels").append(sprintf("<dt>Job %d</dt><dd><strong>%s</strong> build time %s</dd>",i+1,val.jobName,sec2hms(parseFloat(val.estimatedBuildTime))));
+        });      
+        }).fail( function(x) {
         $("#queuels").empty();
-       });
    });
 setTimeout(getData,10000);
 };
