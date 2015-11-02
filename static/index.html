@@ -177,7 +177,7 @@ function getData(){
          });
    $.getJSON("/v1/uprint/job", function(result){
          var tleft = parseInt(result.estimatedBuildTime) - parseInt(result.buildTime);
-         var percentRemain = (parseInt(result.totalLayers)*100) / parseInt(result.currentLayer);
+        var percentRemain = (parseInt(result.currentLayer)*100) / parseInt(result.totalLayers);
         setDSlider("progress",sprintf('Layer %s/%s, %s remaining',result.currentLayer,result.totalLayers,sec2hms(tleft)),percentRemain);
          $("#jname").text("Build Progress - "+result.jobName);
 
