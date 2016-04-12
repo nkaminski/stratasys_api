@@ -17,7 +17,7 @@ def return_unavail():
 def refreshCond():
     global od, lastref
     if(lastref < time.monotonic()):
-        od=st.stratasys_out_proc(st.printer_get_data(printer_host))
+        od=st.output_postproc(st.stratasys_out_proc(st.printer_get_data(printer_host)))
         print("Perfomed Refresh")
         lastref = (time.monotonic() + 10.0)
         

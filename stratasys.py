@@ -4,7 +4,7 @@ from struct import *
 import socket
 import time
 
-PORT = 53742
+PORT = 53742              # The same port as used by the server
 
 def make_request(sock, req):
     req_struct = pack('64s', req)
@@ -76,7 +76,9 @@ def stratasys_out_proc(stra):
             else:
                     out_dict[p.group('category')] = objproc(p.group('category'),p.group('value'))
         return out_dict                    
-
-
+def output_postproc(ind):
+    if(len(ind['machineStatus(queue)'][0].keys()) == 0):
+        ind['machineStatus(queue)'] = []
+    return ind
 if( __name__ == "__main__"):
-    print(stratasys_out_proc(printer_get_data()))
+    print (output_postproc(stratasys_out_proc(printer_get_data('192.168.0.3'))))
