@@ -1,12 +1,12 @@
-.modal-content {
-  width: 900px;
-  margin-left: -150px;
+.dl-horizontal {
+  text-align: left;
+  white-space: normal;
 }
-.dl-horizontal dt {
-  float: left;
-  width: 160px;
-  overflow: visible;
-  clear: left;
-  text-align: right;
-  white-space: nowrap;
+dl dt {
+  word-wrap: break-word;
+  width: 40%
+  padding: 0.5em;
+}
+dl dd {
+  padding: 0.5em;
 }

@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="Status of a Stratasys uPrint">
+    <meta name="author" content="Nash Kaminski">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Machinery Status</title>
+    <title>Machine Status</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -26,7 +26,7 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">Machinery Status</a>
+          <a class="navbar-brand" href="#">Machine Status</a>
         </div>
       </div>
     </nav>
@@ -37,8 +37,7 @@
       <div class="row">
       <hr>
      <div class="col-md-6">
-	<img id="camImg" src="/3d-webcam/video.mjpg?q=75&fps=30" class="img-responsive" style="border: 1px solid #cc0000;">	
-	
+	<p>webcam feed here</p>	
        </div>
        <div class="col-md-6">
           <h2>uPrint FDM 3D Printer</h2> 
@@ -59,8 +58,8 @@
      <div class="row">
         <div class="col-md-12">
           <h2>API Documentation</h2>
-          <p>All data on this site is available via an HTTP REST API. See below for details. -github link-</p>
-          <p><a class="btn btn-default" href="#" data-toggle="modal" data-target="#apidoc" role="button">View details &raquo;</a></p>
+          <p>All data on this site is available via an HTTP REST API. See below for details. <br><a href="https://github.com/nkaminski/stratasys_api">Source Code</a></p>
+          <p><a class="btn btn-default" href="#" data-toggle="modal" data-target="#apidoc" role="button">API Endpoints &raquo;</a></p>
        </div>
      </div>
 
@@ -108,7 +107,7 @@
 </div>
 
       <footer>
-        <p>&copy; Nash Kaminski 2015</p>
+        <p>Protocol reverse-engineering and page design by Nash Kaminski</p>
       </footer>
     </div> <!-- /container -->
 
@@ -176,9 +175,14 @@ function getData(){
             $("#mstatus").text("Offline");
          });
    $.getJSON("/v1/uprint/job", function(result){
-         var tleft = parseInt(result.estimatedBuildTime) - parseInt(result.buildTime);
-        var percentRemain = (parseInt(result.currentLayer)*100) / parseInt(result.totalLayers);
-        setDSlider("progress",sprintf('Layer %s/%s, %s remaining',result.currentLayer,result.totalLayers,sec2hms(tleft)),percentRemain);
+         var tleft;
+         var percentRemain = Math.round((parseInt(result.currentLayer)*100) / parseInt(result.totalLayers));
+         if(percentRemain ==0){
+		tleft=0;
+         }else{
+	        tleft = parseInt(result.estimatedBuildTime) - parseInt(result.buildTime);
+	 }
+	 setDSlider("progress",sprintf('Layer %s/%s (%s%s), %s remaining',result.currentLayer,result.totalLayers,percentRemain,"%",sec2hms(tleft)),percentRemain);
          $("#jname").text("Build Progress - "+result.jobName);
 
          }).fail( function(x) {
@@ -187,10 +191,10 @@ function getData(){
             });
    $.getJSON("/v1/uprint/queue", function(result){
         $("#queuels").empty();
-        $.each(result, function(i, val){
-                $("#queuels").append(sprintf("<dt>Job %d</dt><dd><strong>%s</strong> build time %s</dd>",i+1,val.jobName,sec2hms(parseFloat(val.estimatedBuildTime))));
-        });      
-        }).fail( function(x) {
+      	$.each(result, function(i, val){
+        	$("#queuels").append(sprintf("<dt>Job %d</dt><dd><strong>%s</strong><br>build time %s</dd>",i+1,val.jobName,sec2hms(parseFloat(val.estimatedBuildTime))));
+      	});      
+	}).fail( function(x) {
         $("#queuels").empty();
    });
 setTimeout(getData,10000);
@@ -201,3 +205,4 @@ $(document).ready(function() {
       });
 </script>
 </body>
+</html>
