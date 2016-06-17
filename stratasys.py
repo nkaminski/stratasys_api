@@ -3,8 +3,7 @@ import json
 from struct import *
 import socket
 import time
-
-PORT = 53742              # The same port as used by the server
+import config as cf
 
 def make_request(sock, req):
     req_struct = pack('64s', req)
@@ -75,10 +74,9 @@ def stratasys_out_proc(stra):
                         out_dict[p1[0]]=p1[2]
             else:
                     out_dict[p.group('category')] = objproc(p.group('category'),p.group('value'))
-        return out_dict                    
-		if(len(ind['machineStatus(queue)'][0].keys()) == 0):
-			ind['machineStatus(queue)'] = []
-		return ind
+        if(len(out_dict['machineStatus(queue)'][0].keys()) == 0):
+            out_dict['machineStatus(queue)'] = []
+        return out_dict
 def output_postproc(indata):
      name=indata['machineStatus(general)']['modelerType']
      nameKey="machinestatus("+name+")"
@@ -92,4 +90,4 @@ def output_postproc(indata):
         indata['machineStatus(extended)']['machineName'] = "Other"
      return indata
 if( __name__ == "__main__"):
-    print (output_postproc(stratasys_out_proc(printer_get_data('192.168.0.3'))))
+    print (output_postproc(stratasys_out_proc(printer_get_data(cf.printer_ip))))

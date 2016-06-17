@@ -5,9 +5,9 @@ import stratasys as st
 from pprint import pprint
 import flask as fk
 from flask import jsonify,Response
+import config as cf
 
 app = fk.Flask(__name__)
-printer_host = '192.168.0.3'
 
 def return_unavail():
     rd = { 'status' : "offline"}
@@ -17,7 +17,7 @@ def return_unavail():
 def refreshCond():
     global od, lastref
     if(lastref < time.monotonic()):
-        od=st.output_postproc(st.stratasys_out_proc(st.printer_get_data(printer_host)))
+        od=st.output_postproc(st.stratasys_out_proc(st.printer_get_data(cf.printer_ip)))
         print("Perfomed Refresh")
         lastref = (time.monotonic() + 10.0)
         
@@ -68,5 +68,5 @@ def sanitize(ind):
 
 if( __name__ == "__main__"):
     lastref = 0
-    app.run(host='0.0.0.0',port=8080,debug=False)
+    app.run(host='0.0.0.0',port=cf.app_port,debug=False)
 
