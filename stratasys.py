@@ -78,8 +78,9 @@ def stratasys_out_proc(stra):
             out_dict['machineStatus(queue)'] = []
         return out_dict
 def output_postproc(indata):
-     name=indata['machineStatus(general)']['modelerType']
-     nameKey="machinestatus("+name+")"
+     name_map = {'paia' : 'mariner', 'lffs' : 'lffs'}
+     name=name_map[indata['machineStatus(general)']['modelerType']]
+     nameKey="machineStatus("+name+")"
      indata['machineStatus(extended)'] = indata[nameKey]
      del indata[nameKey]
      if name == 'lffs':
