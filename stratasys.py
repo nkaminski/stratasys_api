@@ -76,9 +76,20 @@ def stratasys_out_proc(stra):
             else:
                     out_dict[p.group('category')] = objproc(p.group('category'),p.group('value'))
         return out_dict                    
-def output_postproc(ind):
-    if(len(ind['machineStatus(queue)'][0].keys()) == 0):
-        ind['machineStatus(queue)'] = []
-    return ind
+		if(len(ind['machineStatus(queue)'][0].keys()) == 0):
+			ind['machineStatus(queue)'] = []
+		return ind
+def output_postproc(indata):
+     name=indata['machineStatus(general)']['modelerType']
+     nameKey="machinestatus("+name+")"
+     indata['machineStatus(extended)'] = indata[nameKey]
+     del indata[nameKey]
+     if name == 'lffs':
+        indata['machineStatus(extended)']['machineName'] = "Fortus"
+     elif name == 'mariner':
+        indata['machineStatus(extended)']['machineName'] = "uPrint"
+     else: 
+        indata['machineStatus(extended)']['machineName'] = "Other"
+     return indata
 if( __name__ == "__main__"):
     print (output_postproc(stratasys_out_proc(printer_get_data('192.168.0.3'))))
