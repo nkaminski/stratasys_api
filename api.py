@@ -50,7 +50,7 @@ def es():
     refreshCond()
     if not od:
         return return_unavail()
-    return jsonify(sanitize(od['machineStatus(mariner)']))
+    return jsonify(sanitize(od['machineStatus(extended)']))
 @app.route("/v1/uprint/material")
 def cass():
     global od
