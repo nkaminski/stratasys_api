@@ -58,10 +58,9 @@ def cass():
     if not od:
         return return_unavail()
     return jsonify(sanitize(od['machineStatus(cassette)']))
-
-@app.route('/')
+@app.route("/")
 def root():
-        return app.send_static_file('static/index.html')
+    return app.send_static_file('index.html')
 
 def sanitize(ind):
     r = re.compile("version|serial|mfglot|mfgdate|usagedate")
