@@ -80,13 +80,16 @@ def stratasys_out_proc(stra):
 			ind['machineStatus(queue)'] = []
 		return ind
 def output_postproc(indata):
-     tempVar=indata['machineStatus(general)']['modelerType']
-     if tempVar == 'lffs':
-        print("fortus")
-     elif tempVar == 'mariner':
-        print("uprint")
+     name=indata['machineStatus(general)']['modelerType']
+     nameKey="machinestatus("+name+")"
+     indata['machineStatus(extended)'] = indata[nameKey]
+     del indata[nameKey]
+     if name == 'lffs':
+        indata['machineStatus(extended)']['machineName'] = "Fortus"
+     elif name == 'mariner':
+        indata['machineStatus(extended)']['machineName'] = "uPrint"
      else: 
-        print("other")
+        indata['machineStatus(extended)']['machineName'] = "Other"
      return indata
 if( __name__ == "__main__"):
     print (output_postproc(stratasys_out_proc(printer_get_data('192.168.0.3'))))
