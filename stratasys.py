@@ -74,21 +74,23 @@ def stratasys_out_proc(stra):
                         out_dict[p1[0]]=p1[2]
             else:
                     out_dict[p.group('category')] = objproc(p.group('category'),p.group('value'))
-        if(len(out_dict['machineStatus(queue)'][0].keys()) == 0):
-            out_dict['machineStatus(queue)'] = []
+        out_dict['machineStatus(queue)'] = list(filter(lambda x: len(x.keys()) != 0, out_dict['machineStatus(queue)']))
         return out_dict
 def output_postproc(indata):
-     name_map = {'paia' : 'mariner', 'lffs' : 'lffs'}
+     name_map = {'paia' : 'mariner', 'lffs' : 'lffs', 'sst1230' : 'mariner'}
      name=name_map[indata['machineStatus(general)']['modelerType']]
      nameKey="machineStatus("+name+")"
      indata['machineStatus(extended)'] = indata[nameKey]
      del indata[nameKey]
-     if name == 'lffs':
+     return indata
+     if indata['machineStatus(general)']['modelerType'] == 'lffs':
         indata['machineStatus(extended)']['machineName'] = "Fortus"
-     elif name == 'mariner':
+     elif indata['machineStatus(general)']['modelerType'] == 'paia':
         indata['machineStatus(extended)']['machineName'] = "uPrint"
-     else: 
+     elif indata['machineStatus(general)']['modelerType'] == 'mariner':
+        indata['machineStatus(extended)']['machineName'] = "Dimension"
+     else:
         indata['machineStatus(extended)']['machineName'] = "Other"
      return indata
 if( __name__ == "__main__"):
-    print (output_postproc(stratasys_out_proc(printer_get_data(cf.printer_ip))))
+     print (output_postproc(stratasys_out_proc(printer_get_data(cf.printer_ip))))
