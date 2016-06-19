@@ -82,7 +82,6 @@ def output_postproc(indata):
      nameKey="machineStatus("+name+")"
      indata['machineStatus(extended)'] = indata[nameKey]
      del indata[nameKey]
-     return indata
      if indata['machineStatus(general)']['modelerType'] == 'lffs':
         indata['machineStatus(extended)']['machineName'] = "Fortus"
      elif indata['machineStatus(general)']['modelerType'] == 'paia':
