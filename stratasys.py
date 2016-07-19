@@ -77,7 +77,7 @@ def stratasys_out_proc(stra):
         out_dict['machineStatus(queue)'] = list(filter(lambda x: len(x.keys()) != 0, out_dict['machineStatus(queue)']))
         return out_dict
 def output_postproc(indata):
-     name_map = {'paia' : 'mariner', 'lffs' : 'lffs', 'sst1230' : 'mariner'}
+     name_map = {'paia' : 'mariner', 'lffs' : 'lffs', 'sst1230' : 'mariner', 'solo' : 'solo'}
      name=name_map[indata['machineStatus(general)']['modelerType']]
      nameKey="machineStatus("+name+")"
      indata['machineStatus(extended)'] = indata[nameKey]
@@ -88,8 +88,11 @@ def output_postproc(indata):
         indata['machineStatus(extended)']['machineName'] = "uPrint"
      elif indata['machineStatus(general)']['modelerType'] == 'mariner':
         indata['machineStatus(extended)']['machineName'] = "Dimension"
+     elif indata['machineStatus(general)']['modelerType'] == 'solo':
+        indata['machineStatus(extended)']['machineName'] = "Mojo"
      else:
         indata['machineStatus(extended)']['machineName'] = "Other"
      return indata
+
 if( __name__ == "__main__"):
      print (output_postproc(stratasys_out_proc(printer_get_data(cf.printer_ip))))
