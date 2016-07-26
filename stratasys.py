@@ -62,7 +62,7 @@ def objproc(key, value):
 def stratasys_out_proc(stra):
         if not(stra):
             return None
-        stra=stra.replace(b'\n',b'').split(b';')
+        stra=stra.replace(b'\n',b'').replace(b'\r',b'').split(b';')
         out_dict={}
         bracesplit = re.compile(r"(?P<category>machineStatus\([^\s]+\)) (?P<value>\{.*\})")
         for s in stra:
