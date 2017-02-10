@@ -36,7 +36,7 @@ def printer_get_data(h,p=53742):
         return outdat;
 
 def objproc(key, value):
-        if(key == "machineStatus(queue)"):
+        if(key == "machineStatus(queue)" or key == "machineStatus(cassette)"):
             v1 = value[1:-1].split('}\t')
             ol=[]
             for i in v1:
