@@ -57,7 +57,8 @@ def cass():
     refreshCond()
     if not od:
         return return_unavail()
-    return jsonify(sanitize(od['machineStatus(cassette)']))
+    rs = json.dumps(od['machineStatus(cassette)'])
+    return Response(rs, status=200, mimetype = 'application/json')
 @app.route("/")
 def root():
     return app.send_static_file('index.html')
