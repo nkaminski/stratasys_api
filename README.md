@@ -11,4 +11,5 @@ The network protocol used by Stratasys machines uses a request/response system, 
 * Fortus 900mc
 * Dimension 1200es
 * uPrint SE
-* Mojo (unstable, in progress)
+* F170
+* Mojo (unstable)
